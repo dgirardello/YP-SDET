@@ -1,6 +1,7 @@
 import requests
 import re
 from features.steps.constants import ENDPOINT, HEADERS
+from features.steps.utils import get_order
 
 QUERY_QUALIFIERS = ['size', 'followers', 'forks', 'stars', 'topics', 'good-first-issues', 'help-wanted-issues']
 QUERY_KEY_VALUE  = ['repo', 'user', 'org', 'language', 'topic', 'licence', 'mirror', 'archived']
@@ -18,7 +19,10 @@ def query_builder(**kwargs):
         elif key == 'q_is':
             q_str = "is:{}".format(value)
         elif key in QUERY_KEY_VALUE:
-            q_str = "{}:{}".format(key, value)
+            if isinstance(value, list):
+                q_str = '+'.join(["{}:{}".format(key, v) for v in value])
+            else:
+                q_str = "{}:{}".format(key, value)
         elif key in QUERY_QUALIFIERS:
             q_str = "{}:{}".format(key, ''.join(map(str, value)))
         elif key in QUERY_DATE:
@@ -34,9 +38,9 @@ def query_builder(**kwargs):
 def execute_request(query, **kwargs):
     params = "q=%s" % query
     if 'sort' in kwargs:
-        params += "&sort=%s" % kwargs['sort']
-    if 'order' in kwargs:
-        params += "&order=%s" % kwargs['order']
+        params += "+sort:%s" % kwargs['sort']
+        if 'order' in kwargs:
+            params += "-%s" % get_order(kwargs['order'])
     if 'per_page' in kwargs:
         params += "&per_page=%s" % kwargs['per_page']
     if 'page' in kwargs:

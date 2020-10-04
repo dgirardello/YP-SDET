@@ -25,7 +25,7 @@ Feature: Use Cases for searching repositories
         | python     |
         | javascript |
 
-  @UC_003 @test
+  @UC_003
   Scenario: Fetch the top ten followed repositories written in python
     When I execute the API request to search for repositories, sorted by "stars" ordered in descending manner with "10" items per page, using the query parameters
           | KEY      | VALUE  |
@@ -34,3 +34,25 @@ Feature: Use Cases for searching repositories
     And In the response the field "total_count" is equal or greater than "10"
     And In the response the list of repositories contains "10" elements
     And In the response the list of repositories is ordered by the key "stargazers_count"
+
+  @UC_004
+  Scenario: Fetch the top ten last updated repositories written in Java, Python or JavaScript
+    When I execute the API request to search for repositories, sorted by "updated" ordered in ascending manner with "10" items per page, using the query parameters
+          | KEY      | VALUE      |
+          | language | java       |
+          | language | python     |
+          | language | javascript |
+    Then The response code is "200"
+    And In the response the field "total_count" is equal or greater than "10"
+    And In the response the list of repositories contains "10" elements
+    And In the response the list of repositories is ordered by the key "updated_at" in ascending order
+
+  @UC_005
+  Scenario: Fetch all the public repositories written in Java that are archived
+    When I execute the API request to search for repositories using the query parameters
+          | KEY      | VALUE      |
+          | language | java       |
+          | public   | true       |
+          | archived | true       |
+    Then The response code is "200"
+    And In the response the field "total_count" is equal or greater than "1"

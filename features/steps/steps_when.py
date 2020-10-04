@@ -161,8 +161,7 @@ def step_impl(context, order):
     context.request_response = execute_request(query, order=get_order(order))
 
 
-@when(
-    'I execute the API request to search for repositories, sorted by "{sort}" ordered in {order} manner, using the query parameters')
+@when('I execute the API request to search for repositories, sorted by "{sort}" ordered in {order} manner, using the query parameters')
 def step_impl(context, sort, order):
     query_args = table_to_query_args(context.table)
     query = query_builder(**query_args)
@@ -174,3 +173,12 @@ def step_impl(context, sort, order, per_page):
     query_args = table_to_query_args(context.table)
     query = query_builder(**query_args)
     context.request_response = execute_request(query, sort=sort, order=get_order(order), per_page=per_page)
+
+
+@when('I execute the API request to search for repositories, with "{per_page}" items per page, using the query parameters')
+def step_impl(context, per_page):
+    query_args = table_to_query_args(context.table)
+    query = query_builder(**query_args)
+    context.request_response = execute_request(query, per_page=per_page)
+
+

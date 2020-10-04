@@ -25,7 +25,12 @@ def table_to_query_args(table):
         key = str(row[0]).lower()
         if key in ['is', 'in']:
             key = 'q_' + key
-        query_args.update({key: row[1]})
+        if key not in query_args:
+            query_args.update({key: row[1]})
+        else:
+            if not isinstance(query_args[key], list):
+                query_args[key] = [query_args[key]]
+            query_args[key].append(row[1])
     return query_args
 
 

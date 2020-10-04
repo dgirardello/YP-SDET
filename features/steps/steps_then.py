@@ -1,6 +1,6 @@
 from behave import then
 from hamcrest import *
-
+from features.steps.utils import get_order
 
 @then('The response code is "{ret_code:d}"')
 def step_impl(context, ret_code):
@@ -56,3 +56,16 @@ def step_impl(context, json_field):
     for item in json_response['items']:
         assert_that(item[json_field], less_than_or_equal_to(last_value))
         last_value = item[json_field]
+
+
+@then('In the response the list of repositories is ordered by the key "{json_field}" in {order} order')
+def step_impl(context, json_field, order):
+    json_response = context.request_response.json()
+    last_value = json_response['items'][0][json_field]
+    desc_order = (get_order(order) == 'desc')
+    for i in range(1, len(json_response['items'])):
+        if desc_order:
+            assert_that(json_response['items'][i][json_field], less_than_or_equal_to(last_value))
+        else:
+            assert_that(json_response['items'][i][json_field], greater_than_or_equal_to(last_value))
+        last_value = json_response['items'][i][json_field]
