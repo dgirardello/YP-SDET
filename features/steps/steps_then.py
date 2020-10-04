@@ -1,6 +1,8 @@
 from behave import then
 from hamcrest import *
 from features.steps.utils import get_order
+from jsonschema import validate
+import os, json
 
 @then('The response code is "{ret_code:d}"')
 def step_impl(context, ret_code):
@@ -69,3 +71,16 @@ def step_impl(context, json_field, order):
         else:
             assert_that(json_response['items'][i][json_field], greater_than_or_equal_to(last_value))
         last_value = json_response['items'][i][json_field]
+
+
+@then('The response header "{key}" is "{value}"')
+def step_impl(context, key, value):
+    assert_that(context.request_response.headers[key], contains_string(value))
+
+
+@then('The response body matches the schema "{schema_file}"')
+def step_impl(context, schema_file):
+    file_path = os.path.dirname(os.path.realpath(__file__))
+    f = open(os.path.join(file_path, schema_file), 'r')
+    schema = json.load(f)
+    validate(context.request_response.json(), schema=schema)

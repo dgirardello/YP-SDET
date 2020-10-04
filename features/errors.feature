@@ -2,7 +2,7 @@
 Feature: Error cases
   # Enter feature description here
 
-  @invalid_type @test
+  @invalid_type
   Scenario Outline: Invalid data type
     When I execute the API request to search for repositories using the query parameters
           | KEY             | VALUE      |

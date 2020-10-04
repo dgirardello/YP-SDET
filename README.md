@@ -102,3 +102,4 @@ For instructions on how to create an OAuth Personal access token on GitHub check
 | sort_and_order.feature | @sort_and_order | A set of test scenario to verify the sort and order of the search results |
 | pagination.feature | @pagination | A set of test scenarios to verify the ability to limit the search results items returned | 
 | errors.feature | @errors | A set of test scenarios to verify the error returned by the search api |
+| schema.feature | @schema | A test to validate the schema of the json response |

@@ -1,0 +1,23 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "total_count": {
+      "type": "integer"
+    },
+    "incomplete_results": {
+      "type": "boolean"
+    },
+    "items": {
+      "type": "array",
+      "items": {},
+      "additionalItems": true
+    }
+  },
+  "additionalProperties": true,
+  "required": [
+    "total_count",
+    "incomplete_results",
+    "items"
+  ]
+}
