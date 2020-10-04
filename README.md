@@ -5,7 +5,7 @@
 - Pip3
 - Virtualenv
 
-##Installation
+## Installation
 1. Download the repository
 2. Create a virtual environment
    ```commandline
